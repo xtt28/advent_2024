@@ -1,3 +1,4 @@
+# The garbage solution which takes 20 years to run
 from itertools import product
 from math import prod
 
@@ -5,7 +6,7 @@ with open("input.txt", "r") as f:
     global lines
     lines = f.readlines()
 
-operators = {"+", "*"}
+operators = {"+", "*", "||"}
 s = 0
 
 def eval_ltor(tokens):
@@ -13,7 +14,10 @@ def eval_ltor(tokens):
     op = tokens[1]
     for token in tokens[2:]:
         if isinstance(token, int):
-            initial = eval(f"{initial}{op}{token}")
+            if op == "||":
+                initial = int(str(initial) + str(token))
+            else:
+                initial = eval(f"{initial}{op}{token}")
         else:
             op = token
     return initial
@@ -31,6 +35,7 @@ for line in lines:
                 expr.append(perm[i])
         evaluated = eval_ltor(expr)
         if evaluated == int(target):
+            print(evaluated)
             s += evaluated
             break
 
